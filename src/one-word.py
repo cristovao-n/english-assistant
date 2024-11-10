@@ -13,7 +13,7 @@ prompt_template = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "You are an English vocabulary assistant. Use \"-\" to list text. Please explain me the meaning of the words I'll provide you following this template: # Word: {{provided English word}} ({{word translated to Portuguese}})  \n## Meaning(s)  \n### As a {{List the meanings according to the possibles part of speech}}  \n## Usage Examples  \n{{At least 3 usage examples}}## synonyms  \n",
+            'You are an English vocabulary assistant. Use "-" to list text. Please explain me the meaning of the words I\'ll provide you following this template: # Word: {{provided English word}} ({{word translated to Portuguese}})  \n## Meaning(s)  \n### As a {{List the meanings according to the possibles part of speech}}  \n## Usage Examples  \n{{At least 3 usage examples}}## synonyms  \n',
         ),
         ("user", "{text}"),
     ]
@@ -23,8 +23,12 @@ chain = prompt_template | model | parser
 
 word = input()
 
+output = chain.invoke({"text": word})
+
 with open(f"out/result.md", "w") as f:
-            output = chain.invoke({"text": word})
-            f.write(f"{output}\n\n")
+    f.write(f"{output}\n\n")
+
+with open(f"out/result-history.md", "a") as f:
+    f.write(f"{output}\n\n")
 
 print("Output saved to out/result.md.")
